@@ -326,6 +326,12 @@ async function ensureAuth(args, { checkOnly = false } = {}) {
     if (!process.env.CLOUDFLARE_ACCOUNT_ID && !env.CLOUDFLARE_ACCOUNT_ID)
       warn('Nên đặt thêm CLOUDFLARE_ACCOUNT_ID.', 'Also set CLOUDFLARE_ACCOUNT_ID (recommended with a token).')
   }
+  // A token plus an account ID is enough to deploy. Account-scoped tokens (e.g. Pages: Edit only)
+  // cannot call `wrangler whoami`, so do not require it; a bad token shows up at deploy time instead.
+  if (process.env.CLOUDFLARE_API_TOKEN && (process.env.CLOUDFLARE_ACCOUNT_ID || env.CLOUDFLARE_ACCOUNT_ID)) {
+    say('Dùng token + account ID, bỏ qua bước kiểm tra đăng nhập.', 'Token + account ID set; skipping the login check.', green('✓'))
+    return env
+  }
   let me = await whoami()
   if (!me.loggedIn) {
     if (process.env.CLOUDFLARE_API_TOKEN)
@@ -395,20 +401,19 @@ function outputFilePath() {
 }
 
 async function deployPages(name, dir, env) {
-  const list = await wrangler(['pages', 'project', 'list', '--json'], { mode: 'capture', env })
-  if (list.code !== 0)
-    throw new FriendlyError('Không đọc được danh sách dự án Pages.', 'Could not list your Pages projects.', (list.err || list.out).trim().split('\n').slice(-8))
-  const projects = parseJson(list.out) || []
-  const exists = projects.some((p) => (p['Project Name'] || p.name) === name)
-  if (exists) say(`Dự án "${name}" đã có, sẽ cập nhật bản mới.`, `Project "${name}" exists; deploying a new version.`, green('✓'))
-  else {
-    say(`Tạo dự án Pages mới: ${name}`, `Creating Pages project: ${name}`)
-    const c = await wrangler(['pages', 'project', 'create', name, '--production-branch', 'main'], { env })
-    if (c.code !== 0) throw new FriendlyError('Tạo dự án thất bại (xem lỗi ở trên).', 'Creating the project failed (see above).', 'Thử tên khác: npm run publish -- --name ten-khac / Try another name.')
-  }
+  // --force: newer wrangler hands `pages` commands to Workers when it detects an AI agent
+  // (Claude Code, Codex...); students and their agents should stay on Pages.
+  // Create the project if it is new. We never list the account's projects: a student's (or a
+  // workshop's shared) account may hold other people's sites, and an "already exists" reply is enough.
+  say(`Chuẩn bị dự án Pages: ${name}`, `Preparing Pages project: ${name}`)
+  const c = await wrangler(['pages', 'project', 'create', name, '--production-branch', 'main', '--force'], { mode: 'capture', env })
+  const cText = `${c.out}\n${c.err}`
+  if (c.code === 0) say(`Đã tạo dự án mới "${name}".`, `Created new project "${name}".`, green('✓'))
+  else if (/already exists|8000002/i.test(cText)) say(`Dự án "${name}" đã có, sẽ cập nhật bản mới.`, `Project "${name}" exists; deploying a new version.`, green('✓'))
+  else throw new FriendlyError('Tạo dự án thất bại.', 'Creating the project failed.', [...cText.trim().split('\n').slice(-6), 'Thử tên khác: npm run publish -- --name ten-khac / Try another name.'])
   const out = outputFilePath()
   say('Đang tải trang web lên Cloudflare...', 'Uploading your site to Cloudflare...')
-  const d = await wrangler(['pages', 'deploy', dir, '--project-name', name, '--branch', 'main', '--commit-dirty=true'], {
+  const d = await wrangler(['pages', 'deploy', dir, '--project-name', name, '--branch', 'main', '--commit-dirty=true', '--force'], {
     env: { ...env, WRANGLER_OUTPUT_FILE_PATH: out },
   })
   if (d.code !== 0) throw new FriendlyError('Tải lên thất bại (xem lỗi ở trên).', 'Upload failed (see above).')
