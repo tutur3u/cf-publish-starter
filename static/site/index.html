@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trang web đầu tiên của tôi</title>
+    <meta name="description" content="Trang web đầu tiên, đăng lên mạng bằng Cloudflare Pages." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <div class="bar"></div>
+      <h1>Xin chào! 👋</h1>
+      <p class="lead">
+        Đây là trang web đầu tiên của tôi. Sửa chữ trong file <code>site/index.html</code>,
+        đổi màu trong <code>site/style.css</code>, rồi chạy <code>npm run publish</code>.
+      </p>
+
+      <section class="card">
+        <h2>Về tôi</h2>
+        <p>Viết vài dòng giới thiệu bản thân ở đây.</p>
+      </section>
+
+      <section class="card">
+        <h2>Thử JavaScript</h2>
+        <p>Bạn đã bấm nút <strong id="count">0</strong> lần.</p>
+        <button id="btn" type="button">Bấm tôi</button>
+      </section>
+
+      <footer>
+        Đăng bằng Cloudflare Pages · <span id="year"></span>
+      </footer>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

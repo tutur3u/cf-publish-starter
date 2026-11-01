@@ -1,0 +1,11 @@
+// Cloudflare Workers settings. `npm run publish` passes the project name with
+// --name, so you normally never edit this file.
+// Docs: https://developers.cloudflare.com/workers/framework-guides/web-apps/tanstack-start/
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-tanstack-app",
+  "compatibility_date": "2026-10-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
+  "observability": { "enabled": true }
+}

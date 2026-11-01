@@ -1,0 +1,11 @@
+{
+  "name": "cf-publish-starter",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "publish": "node tools/where.mjs",
+    "deploy": "node tools/where.mjs",
+    "share": "node tools/where.mjs",
+    "verify": "node tools/verify.mjs"
+  }
+}

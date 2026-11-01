@@ -1,0 +1,48 @@
+{
+  "name": "my-tanstack-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TanStack Start + Vite on Cloudflare Workers, with a one-command publish.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "preview": "vite build && vite preview",
+    "publish": "node scripts/publish.mjs",
+    "deploy": "node scripts/publish.mjs",
+    "share": "node scripts/share.mjs",
+    "check": "node scripts/publish.mjs --check",
+    "login": "node scripts/login.mjs",
+    "typecheck": "tsc --noEmit",
+    "cf-typegen": "wrangler types"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "1.170.46",
+    "@tanstack/react-start": "1.169.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.66.0",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "typescript": "6.0.3",
+    "vite": "8.3.5",
+    "wrangler": "4.156.0"
+  },
+  "cfPublish": {
+    "target": "workers",
+    "build": "build",
+    "serve": "vite-preview"
+  },
+  "allowScripts": {
+    "workerd@1.20261023.1": true,
+    "esbuild@0.28.2": true
+  }
+}

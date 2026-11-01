@@ -1,0 +1,31 @@
+{
+  "name": "my-static-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Trang web tĩnh đơn giản + lệnh đăng lên Cloudflare Pages. A plain static site with a one-command Cloudflare Pages publish.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "publish": "node scripts/publish.mjs",
+    "deploy": "node scripts/publish.mjs",
+    "share": "node scripts/share.mjs",
+    "check": "node scripts/publish.mjs --check",
+    "login": "node scripts/login.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "wrangler": "4.156.0"
+  },
+  "cfPublish": {
+    "target": "pages",
+    "outputDir": "site",
+    "build": null,
+    "serve": "static"
+  },
+  "allowScripts": {
+    "workerd@1.20261023.1": true,
+    "esbuild@0.28.2": true
+  }
+}
