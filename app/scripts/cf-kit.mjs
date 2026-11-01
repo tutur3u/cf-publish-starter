@@ -153,6 +153,9 @@ const GENERIC = new Set(['static', 'app', 'site', 'web', 'www', 'src', 'dist', '
 
 export function suggestName(dir = ROOT) {
   const base = slugify(path.basename(dir))
+  if (base === 'static' || base === 'app' || base.includes('cf-publish-starter')) {
+    return base === 'app' || base.endsWith('-app') ? 'my-app' : 'my-site'
+  }
   if (base && !GENERIC.has(base)) return base
   const parent = slugify(path.basename(path.dirname(dir)))
   if (parent && !GENERIC.has(parent) && base) return slugify(`${parent}-${base}`)

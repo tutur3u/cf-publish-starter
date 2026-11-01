@@ -23,13 +23,13 @@ npm run publish
 
 ## Setup (once)
 
-1. On GitHub: **Code** → **Download ZIP**, then unzip.
+1. On GitHub: **Code** → **Download ZIP**, then unzip. The extracted folder is `cf-publish-starter-main`, containing `static` and `app`.
 2. Free Cloudflare account: <https://dash.cloudflare.com/sign-up> (for A and B).
 3. Node.js **LTS** from <https://nodejs.org> (for B and C). Check with `node -v` (needs v22 or newer).
 
 Open a terminal in the starter folder:
-- **Windows:** open `static` in File Explorer, click the address bar, type `cmd`, press Enter.
-- **macOS:** open Terminal, type `cd ` (with a space), drag the `static` folder into the window, press Enter.
+- **Windows:** open the folder you will use (`static` for HTML sites, `app` for the React/TanStack template) in File Explorer, click the address bar, type `cmd`, press Enter.
+- **macOS:** open Terminal, type `cd ` (with a space), drag the folder you will use (`static` for HTML sites, `app` for the React/TanStack template) into the window, press Enter.
 
 No terminal wanted? Double-click `Publish-Windows.cmd` / `Share-Windows.cmd` (Windows) or
 `Publish-Mac.command` / `Share-Mac.command` (macOS; first time: right-click → Open → Open).
@@ -49,11 +49,16 @@ Limits: 1,000 files, 25 MiB per file. A Direct Upload project cannot be switched
 
 ## B. `npm run publish`
 
-In `static` (or `app`): `npm run publish`. It checks Node, installs packages (first time 1-3 min),
-builds (`app` only), asks for a site name (Enter accepts the suggestion; Vietnamese is converted,
-`Bài tập 1` → `bai-tap-1`), opens the browser for Cloudflare login (click **Allow**), creates the
-project if needed, uploads, and prints the link in a big `DONE!` box. Run it again to update.
-Rename: `npm run publish -- --name new-name`. Dry run without login or upload: `npm run check`.
+1. In `static` (or `app`), run `npm run publish`.
+2. First run installs packages (seconds to 2 min). `npm warn` / `npm notice` lines are not errors; ignore them. It builds `app/` next.
+3. In an interactive terminal (TTY), it asks for a site name. Enter accepts the suggestion; Vietnamese is converted (`Bài tập 1` → `bai-tap-1`). Without a TTY or with `--yes`, it uses the suggestion without asking.
+4. The browser opens for Cloudflare login. The terminal prints `Opening a link in your default browser: https://…` and looks stuck while it waits for you. That's normal: finish in the browser and click **Allow**.
+5. It creates the project if needed, uploads and prints the link in a big `DONE!` box. Run it again to update; the saved name is reused.
+
+**Choose your name:** `npm run publish -- --name ten-cua-ban`.
+The default comes from the folder name. For `static`, `app` or names containing `cf-publish-starter`
+(such as a ZIP extraction), it uses `my-site` / `my-app`.
+Dry run without login or upload: `npm run check`.
 
 `app/` deploys to Workers, as Cloudflare's TanStack Start guide does (SSR and server functions need it).
 The first time, wrangler may ask "Would you like to register a workers.dev subdomain now?": answer `y`
@@ -61,9 +66,30 @@ and choose a name.
 
 ## C. `npm run share` (temporary)
 
-`npm run share` starts the site on your computer and opens a Cloudflare Quick Tunnel. If `cloudflared`
-is missing it offers to download the official build from GitHub into `.tools/` (SHA-256 checked), or
-install it yourself: `brew install cloudflared` (macOS), `winget install --id Cloudflare.cloudflared` (Windows).
+1. In `static` (or `app`), run `npm run share`.
+2. First run installs packages (seconds to 2 min). `npm warn` / `npm notice` lines are not errors; ignore them.
+3. If you see `✓ cloudflared`, it is already installed; skip this step. Otherwise, accept the offer to download the official build from GitHub into `.tools/` (SHA-256 checked), or install it yourself: `brew install cloudflared` (macOS), `winget install --id Cloudflare.cloudflared` (Windows).
+4. Wait **5–20 s** (`app/` also needs build time). Copy the link between `>>>` and `<<<` in this output:
+
+   ```
+   ============================================
+
+      Link tạm thời của bạn / Your temporary link:
+
+      >>>  https://abc-xyz.trycloudflare.com  <<<
+
+      Link này CHỈ chạy khi máy bạn đang mở và cửa sổ này còn chạy.
+      It works ONLY while this computer is awake and this window stays open.
+      Gập máy, máy ngủ, mất mạng hoặc bấm Ctrl+C = link chết.
+      Closing the lid, sleep, losing Wi-Fi or pressing Ctrl+C kills the link.
+      Mỗi lần chạy lại sẽ ra link MỚI. Ai có link đều xem được.
+      Each run gives a NEW link. Anyone with the link can open it.
+      Cần link lâu dài? Dùng: npm run publish
+      Need a permanent link? Use: npm run publish
+
+   ============================================
+   ```
+5. Press **Ctrl+C in the same terminal** to stop; leave other tabs alone.
 
 The `https://*.trycloudflare.com` link works **only while the computer is awake and the command runs**.
 Closing the lid, sleep, losing Wi-Fi or Ctrl+C kills it. Every run gives a new link; anyone with it can
@@ -75,6 +101,8 @@ no Server-Sent Events.
 Open the folder in Claude Code or Codex and say "publish this". [`AGENTS.md`](AGENTS.md) and
 [`.claude/skills/publish-site/SKILL.md`](.claude/skills/publish-site/SKILL.md) tell it which commands to run.
 You click **Allow** in the browser. Never paste passwords or tokens into a chat.
+
+> `.claude` is a hidden folder; enable hidden files if you cannot see it.
 
 ## Troubleshooting
 

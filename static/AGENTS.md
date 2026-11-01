@@ -1,4 +1,5 @@
 # AGENTS.md
 
-See ../AGENTS.md (publishing rules). In this folder: `npm run check`, `npm run publish -- --name <slug>`, `npm run share -- --yes`.
-Never run `npm publish`. Never handle passwords or tokens.
+Read and follow [../AGENTS.md](../AGENTS.md), including template defaults, project naming,
+student-language login hand-off, temporary background sharing and all Never rules.
+Run commands inside this folder.

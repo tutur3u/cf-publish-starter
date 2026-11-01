@@ -24,9 +24,25 @@ for (const v of ['static', 'app']) {
 }
 ok(fs.existsSync(path.join(root, 'static/site/index.html')), 'static/site/index.html')
 
-const { slugify } = await import(path.join(root, 'static/scripts/cf-kit.mjs'))
+const { slugify, suggestName } = await import(path.join(root, 'static/scripts/cf-kit.mjs'))
 for (const [i, e] of [['Bài tập Cuối kỳ!', 'bai-tap-cuoi-ky'], ['Nguyễn Văn Đạt', 'nguyen-van-dat'], ['--X--', 'x']])
   ok(slugify(i) === e, `slugify(${JSON.stringify(i)}) = ${e}`)
+
+for (const [dir, expected] of [
+  ['/tmp/student/static', 'my-site'], ['/tmp/student/app', 'my-app'],
+  ['/tmp/cf-publish-starter-main/static', 'my-site'],
+  ['/tmp/cf-publish-starter-main/app', 'my-app'],
+  ['/tmp/cf-publish-starter-main-app', 'my-app'],
+  ['/tmp/cf-publish-starter-main', 'my-site'], ['/tmp/bai-tap', 'bai-tap'],
+]) ok(suggestName(dir) === expected, `suggestName(${dir}) = ${expected}`)
+
+for (const doc of ['README.md', 'README.en.md']) {
+  for (const match of read(doc).matchAll(/\]\(([^)]+)\)/g)) {
+    const link = match[1]
+    if (!/^(https?:|#)/.test(link))
+      ok(fs.existsSync(path.resolve(root, link.split('#')[0])), `${doc}: link ${link} resolves`)
+  }
+}
 
 console.log(bad ? `\n${bad} check(s) failed` : '\nall checks passed')
 process.exitCode = bad ? 1 : 0

@@ -31,15 +31,15 @@ Có 2 mẫu (starter), chọn 1:
 
 ## Chuẩn bị (làm 1 lần)
 
-1. **Tải bộ mẫu về máy.** Trên trang GitHub của repo, bấm nút xanh **Code** → **Download ZIP**. Giải nén (Windows: chuột phải → *Extract All*; macOS: bấm đúp vào file .zip).
+1. **Tải bộ mẫu về máy.** Trên trang GitHub của repo, bấm nút xanh **Code** → **Download ZIP**. Giải nén (Windows: chuột phải → *Extract All*; macOS: bấm đúp vào file .zip). Bạn sẽ có thư mục `cf-publish-starter-main`, bên trong có `static` và `app`.
 2. **Tạo tài khoản Cloudflare miễn phí** (cho cách A và B): vào <https://dash.cloudflare.com/sign-up>, đăng ký bằng email. (Cách B cũng cho bạn đăng ký ngay lúc đăng nhập.)
 3. **Cài Node.js** (cho cách B và C): vào <https://nodejs.org>, tải bản **LTS**, cài như phần mềm bình thường (cứ bấm *Next*). Cần bản **22 trở lên**.
    Kiểm tra: mở cửa sổ dòng lệnh (xem bên dưới), gõ `node -v`, nhấn Enter. Thấy `v22...` hoặc số lớn hơn là được.
 
 ### Mở cửa sổ dòng lệnh ngay trong thư mục mẫu
 
-- **Windows:** mở thư mục `static` (hoặc `app`) trong File Explorer → bấm vào **thanh địa chỉ** ở trên cùng → xoá hết, gõ `cmd` → nhấn **Enter**. Một cửa sổ đen hiện ra, đã ở đúng thư mục.
-- **macOS:** mở ứng dụng **Terminal** → gõ `cd ` (có dấu cách) → **kéo thư mục** `static` từ Finder thả vào cửa sổ Terminal → nhấn **Enter**.
+- **Windows:** mở thư mục bạn sẽ dùng (`static` cho HTML, `app` cho mẫu React/TanStack) trong File Explorer → bấm vào **thanh địa chỉ** ở trên cùng → xoá hết, gõ `cmd` → nhấn **Enter**. Một cửa sổ đen hiện ra, đã ở đúng thư mục.
+- **macOS:** mở ứng dụng **Terminal** → gõ `cd ` (có dấu cách) → **kéo thư mục bạn sẽ dùng** (`static` cho HTML, `app` cho mẫu React/TanStack) từ Finder thả vào cửa sổ Terminal → nhấn **Enter**.
 
 > Không muốn gõ lệnh? Trong mỗi thư mục mẫu có file bấm đúp: **`Publish-Windows.cmd`** / **`Share-Windows.cmd`** (Windows) và **`Publish-Mac.command`** / **`Share-Mac.command`** (macOS; lần đầu: chuột phải → *Open* → *Open*).
 
@@ -73,10 +73,10 @@ Lưu ý: `index.html` phải nằm **ngay trong** thư mục bạn kéo (không 
    ```
 3. Lần đầu, công cụ sẽ tự làm lần lượt:
    1. Kiểm tra Node.js.
-   2. Cài các gói cần thiết (1-3 phút, chỉ lần đầu).
+   2. Cài các gói cần thiết (vài giây đến 2 phút, chỉ lần đầu). Các dòng `npm warn` / `npm notice` không phải lỗi, cứ bỏ qua.
    3. Build (chỉ với `app/`).
-   4. **Hỏi tên trang web.** Nhấn Enter để dùng tên gợi ý, hoặc gõ tên bạn thích (có dấu tiếng Việt cũng được, công cụ tự đổi `Bài tập 1` thành `bai-tap-1`).
-   5. **Mở trình duyệt để đăng nhập Cloudflare.** Đăng nhập (hoặc tạo tài khoản), rồi bấm **Allow**. Quay lại cửa sổ dòng lệnh.
+   4. **Hỏi tên trang web khi chạy trong cửa sổ dòng lệnh tương tác (TTY).** Nhấn Enter để dùng tên gợi ý, hoặc gõ tên bạn thích (có dấu tiếng Việt cũng được, công cụ tự đổi `Bài tập 1` thành `bai-tap-1`).
+   5. **Mở trình duyệt để đăng nhập Cloudflare.** Đăng nhập (hoặc tạo tài khoản), rồi bấm **Allow**. Cửa sổ dòng lệnh in `Opening a link in your default browser: https://…` và trông như đứng yên khi chờ bạn. Bình thường nhé: làm xong trong trình duyệt và bấm **Allow**, rồi quay lại cửa sổ dòng lệnh.
    6. Tạo dự án và tải trang web lên.
 4. Khi xong, bạn sẽ thấy một khung lớn:
    ```
@@ -89,7 +89,7 @@ Lưu ý: `index.html` phải nằm **ngay trong** thư mục bạn kéo (không 
 
 **Sửa xong muốn cập nhật?** Chạy lại `npm run publish`. Lần sau không hỏi tên, không cần đăng nhập lại.
 
-**Muốn đổi tên?** `npm run publish -- --name ten-moi`
+**Chọn tên của bạn:** `npm run publish -- --name ten-cua-ban`. Mặc định lấy tên thư mục; với `static`, `app` hoặc tên chứa `cf-publish-starter` (như bản ZIP), dùng `my-site` / `my-app`. Không có TTY hoặc có `--yes` thì dùng tên gợi ý, không hỏi. Tên đã lưu được dùng lại.
 
 > Nếu tên đã có người dùng, Cloudflare tự thêm vài ký tự vào link. Công cụ luôn in ra **link thật**, cứ dùng link đó.
 
@@ -112,11 +112,31 @@ Dùng để khoe nhanh bài **đang làm** từ chính máy bạn.
    ```
    npm run share
    ```
-3. Nếu máy chưa có **cloudflared**, công cụ hỏi có tải bản chính thức từ GitHub không. Nhấn **Enter** (đồng ý). Hoặc tự cài:
+   Lần đầu tự cài các gói (vài giây đến 2 phút). Các dòng `npm warn` / `npm notice` không phải lỗi, cứ bỏ qua.
+3. Nếu thấy `✓ cloudflared` thì máy đã có, bỏ qua bước này. Nếu máy chưa có **cloudflared**, công cụ hỏi có tải bản chính thức từ GitHub không. Nhấn **Enter** (đồng ý). Hoặc tự cài:
    - macOS: `brew install cloudflared`
    - Windows: `winget install --id Cloudflare.cloudflared` (cài xong mở lại cửa sổ dòng lệnh)
-4. Bạn sẽ thấy link dạng `https://abc-xyz.trycloudflare.com`. Gửi cho người khác.
-5. Bấm **Ctrl+C** để dừng.
+4. Chờ khoảng **5–20 giây** (mẫu `app/` còn cần thời gian build). Link nằm giữa `>>>` và `<<<` trong khung bên dưới. Copy link đó gửi cho người khác.
+
+   ```
+   ============================================
+
+      Link tạm thời của bạn / Your temporary link:
+
+      >>>  https://abc-xyz.trycloudflare.com  <<<
+
+      Link này CHỈ chạy khi máy bạn đang mở và cửa sổ này còn chạy.
+      It works ONLY while this computer is awake and this window stays open.
+      Gập máy, máy ngủ, mất mạng hoặc bấm Ctrl+C = link chết.
+      Closing the lid, sleep, losing Wi-Fi or pressing Ctrl+C kills the link.
+      Mỗi lần chạy lại sẽ ra link MỚI. Ai có link đều xem được.
+      Each run gives a NEW link. Anyone with the link can open it.
+      Cần link lâu dài? Dùng: npm run publish
+      Need a permanent link? Use: npm run publish
+
+   ============================================
+   ```
+5. Bấm **Ctrl+C trong chính cửa sổ này** để dừng; không đóng các tab khác.
 
 **Quan trọng:**
 
@@ -130,6 +150,8 @@ Dùng để khoe nhanh bài **đang làm** từ chính máy bạn.
 ## Nhờ AI làm giúp (Claude Code, Codex...)
 
 Mở thư mục mẫu bằng Claude Code hoặc Codex và nói: **"Đăng trang này lên mạng giúp mình"** (hoặc *"publish this"*). File [`AGENTS.md`](AGENTS.md) và [`.claude/skills/publish-site/SKILL.md`](.claude/skills/publish-site/SKILL.md) hướng dẫn AI chạy đúng các lệnh trên. Khi trình duyệt mở trang Cloudflare, **bạn** bấm *Allow*. Đừng bao giờ dán mật khẩu hay token vào khung chat.
+
+> `.claude` là thư mục ẩn; bật hiển thị file ẩn nếu chưa thấy nó.
 
 ---
 

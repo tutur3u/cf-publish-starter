@@ -5,13 +5,24 @@ description: Publish or share the student's website with Cloudflare. Use when as
 
 # Publish or share the site
 
-Follow `AGENTS.md` at the repo root. Short version:
+Read and follow [the root AGENTS.md](../../../AGENTS.md) for the full publishing rules.
+Reply in the student's language.
 
-1. `cd static` (plain HTML) or `cd app` (TanStack Start).
-2. Permanent link: `npm run check`, then `npm run publish -- --name <slug>`.
-   If it opens the browser, tell the student to log in and click **Allow**, then wait.
-   Report the exact URL from the `DONE!` box.
-3. Temporary link, no account: `npm run share -- --yes`; report the trycloudflare.com URL
-   and warn that it dies when the command stops or the laptop sleeps.
+1. Default to `static/`. Use `app/` only for React/TanStack or server code.
+2. Ask for or suggest a project name from the student's name/page title, avoiding generic defaults.
+   Run `npm run check`, then `npm run publish -- --name <slug>` inside the template folder.
+   The name is saved in `package.json` > `cfPublish.name`. For several accounts, use the
+   helper's account selection or `--account <id>`; never paste account IDs in chat.
+3. BEFORE publish, explain in the student's language that browser login will open on their
+   computer and they must click **Allow**. Wait up to about 5 minutes. If login fails,
+   times out, or the student is away, do not retry in a loop. Stop only your own command
+   and offer a temporary link. Resume permanent publishing when the student is ready.
+4. Temporary link: run `npm run share -- --yes` in the background, read its output and report
+   the exact trycloudflare.com URL. Keep it running until asked to stop. Explain that the
+   link dies when the command stops, the laptop sleeps or closes; each run gives a new link.
+5. Permanent link: report the exact URL in the `DONE!` box. Ignore install `npm warn` /
+   `npm notice` lines; these are not errors.
 
-Never run `npm publish`. Never ask for or handle passwords, tokens or account IDs.
+Never run `npm publish`. Never handle passwords or tokens or put account IDs in chat/files.
+Never list, modify or delete other Cloudflare projects. Never use non-Cloudflare hosts.
+Never kill processes you did not start; stop only your own PID with SIGINT or your own terminal with Ctrl+C.
